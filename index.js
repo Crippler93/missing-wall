@@ -1,10 +1,8 @@
 const app = require('./app');
 const { sequelize: db } = require('./models');
+const missingRoutes = require('./routes/missing');
 
-app.get('/', async (req, res) => {
-  const missings = await db.models.Missing.findAll({ include: db.models.Images });
-  res.json(missings);
-});
+app.use('/api/missing', missingRoutes);
 
 async function init() {
   await db.sync();
