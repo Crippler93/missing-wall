@@ -17,6 +17,19 @@ const createService = (model, db) => ({
     const total = await model.count();
     return total;
   },
+  async saveMissing(missing) {
+    const createdMissing = await model.create(missing);
+    return createdMissing;
+  },
+  async saveImages(missingId, urls = []) {
+    const images = urls.map((url) => ({
+      url,
+      MissingId: missingId,
+    }));
+
+    const createdImages = await db.models.Images.bulkCreate(images);
+    return createdImages;
+  },
 });
 
 module.exports = createService(sequelize.models.Missing, sequelize);

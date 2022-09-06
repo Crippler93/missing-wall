@@ -1,6 +1,9 @@
 const { DatabaseError } = require('sequelize');
 const { Router } = require('express');
+
+const fileMiddleware = require('../middleware/file.middleware');
 const missingService = require('../services/missing.service');
+const uploadService = require('../services/upload.service');
 const { error } = require('../logger');
 
 const router = Router();
@@ -23,9 +26,12 @@ router.get('', async (req, res) => {
   return res.json(result);
 });
 
-router.post('', (req, res) => {
+router.post('', fileMiddleware.array('images', 5), async (req, res) => {
   // Save missing and images if any
-  res.json({});
+  const missing = await missingService.saveMissing(req.body);
+  const urls = await uploadService.uploadImages(req.files);
+  const images = await missingService.saveImages(missing.id, urls);
+  return res.status(201).json({ missing, images });
 });
 
 router.get(':id', (req, res) => {
