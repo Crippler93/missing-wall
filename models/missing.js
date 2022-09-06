@@ -12,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       models.Missing.hasMany(models.Images);
       models.Images.belongsTo(models.Missing);
-      console.log('models', models);
     }
   }
   Missing.init(

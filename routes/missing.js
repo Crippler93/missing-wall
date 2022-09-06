@@ -1,3 +1,4 @@
+const { DatabaseError } = require('sequelize');
 const { Router } = require('express');
 const missingService = require('../services/missing.service');
 const { error } = require('../logger');
@@ -5,11 +6,19 @@ const { error } = require('../logger');
 const router = Router();
 
 router.get('', async (req, res) => {
-  let result = [];
+  const result = { data: [], count: 0 };
   try {
-    result = await missingService.getAllMissings();
+    let { offset = 0, limit = 5 } = req.query;
+    offset = Number(offset);
+    limit = Number(limit);
+    result.data = await missingService.getAllMissings(offset, limit);
+    result.count = await missingService.getTotalCountMissing();
   } catch (e) {
-    error.data(e);
+    error.error(e);
+    if (e instanceof DatabaseError) {
+      res.status(500);
+    }
+    return res.send();
   }
   return res.json(result);
 });

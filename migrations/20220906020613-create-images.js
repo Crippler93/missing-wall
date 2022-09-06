@@ -7,6 +7,15 @@ module.exports = {
         primaryKey: true,
       },
       url: Sequelize.STRING,
+      MissingId: {
+        type: Sequelize.UUID,
+        references: {
+          model: 'missings',
+          key: 'id',
+        },
+        onUpdate: 'cascade',
+        onDelete: 'set null',
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
