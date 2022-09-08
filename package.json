@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "seed": "npx sequelize-cli db:seed:all",
+    "migrate": "npx sequelize-cli db:migrate",
     "start": "node -r dotenv/config index.js"
   },
   "keywords": [],

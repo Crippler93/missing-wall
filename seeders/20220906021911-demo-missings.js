@@ -2,22 +2,10 @@ const { randomUUID } = require('crypto');
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
-
     const missingsIds = [];
-
     for (let i = 0; i < 10; i++) {
       missingsIds.push(randomUUID());
     }
-
     await queryInterface.bulkInsert('missings', [
       {
         id: missingsIds[0],
@@ -105,6 +93,7 @@ module.exports = {
       {
         id: randomUUID(),
         url: 'http://via.placeholder.com/640x360',
+        publicId: 'cr4mxeqx5zb8rlakpfkg',
         createdAt: new Date(),
         updatedAt: new Date(),
         MissingId: missingsIds[0],
@@ -112,6 +101,7 @@ module.exports = {
       {
         id: randomUUID(),
         url: 'http://via.placeholder.com/640x360',
+        publicId: 'cr4mxeqx5zb8rlakpfkg',
         createdAt: new Date(),
         updatedAt: new Date(),
         MissingId: missingsIds[1],
@@ -119,6 +109,7 @@ module.exports = {
       {
         id: randomUUID(),
         url: 'http://via.placeholder.com/640x360',
+        publicId: 'cr4mxeqx5zb8rlakpfkg',
         createdAt: new Date(),
         updatedAt: new Date(),
         MissingId: missingsIds[2],
@@ -126,6 +117,7 @@ module.exports = {
       {
         id: randomUUID(),
         url: 'http://via.placeholder.com/640x360',
+        publicId: 'cr4mxeqx5zb8rlakpfkg',
         createdAt: new Date(),
         updatedAt: new Date(),
         MissingId: missingsIds[3],
@@ -133,6 +125,7 @@ module.exports = {
       {
         id: randomUUID(),
         url: 'http://via.placeholder.com/640x360',
+        publicId: 'cr4mxeqx5zb8rlakpfkg',
         createdAt: new Date(),
         updatedAt: new Date(),
         MissingId: missingsIds[4],
@@ -140,6 +133,7 @@ module.exports = {
       {
         id: randomUUID(),
         url: 'http://via.placeholder.com/640x360',
+        publicId: 'cr4mxeqx5zb8rlakpfkg',
         createdAt: new Date(),
         updatedAt: new Date(),
         MissingId: missingsIds[5],
@@ -147,6 +141,7 @@ module.exports = {
       {
         id: randomUUID(),
         url: 'http://via.placeholder.com/640x360',
+        publicId: 'cr4mxeqx5zb8rlakpfkg',
         createdAt: new Date(),
         updatedAt: new Date(),
         MissingId: missingsIds[6],
@@ -154,6 +149,7 @@ module.exports = {
       {
         id: randomUUID(),
         url: 'http://via.placeholder.com/640x360',
+        publicId: 'cr4mxeqx5zb8rlakpfkg',
         createdAt: new Date(),
         updatedAt: new Date(),
         MissingId: missingsIds[7],
@@ -161,6 +157,7 @@ module.exports = {
       {
         id: randomUUID(),
         url: 'http://via.placeholder.com/640x360',
+        publicId: 'cr4mxeqx5zb8rlakpfkg',
         createdAt: new Date(),
         updatedAt: new Date(),
         MissingId: missingsIds[8],
@@ -168,6 +165,7 @@ module.exports = {
       {
         id: randomUUID(),
         url: 'http://via.placeholder.com/640x360',
+        publicId: 'cr4mxeqx5zb8rlakpfkg',
         createdAt: new Date(),
         updatedAt: new Date(),
         MissingId: missingsIds[9],

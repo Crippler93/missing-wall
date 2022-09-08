@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
     },
     url: DataTypes.STRING,
+    publicId: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Images',

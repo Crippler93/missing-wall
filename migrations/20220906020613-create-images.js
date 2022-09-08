@@ -7,6 +7,7 @@ module.exports = {
         primaryKey: true,
       },
       url: Sequelize.STRING,
+      publicId: Sequelize.STRING,
       MissingId: {
         type: Sequelize.UUID,
         references: {

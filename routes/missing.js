@@ -1,24 +1,22 @@
-const { DatabaseError } = require('sequelize');
+const { BaseError } = require('sequelize');
 const { Router } = require('express');
 
 const fileMiddleware = require('../middleware/file.middleware');
 const missingService = require('../services/missing.service');
 const uploadService = require('../services/upload.service');
-const { error } = require('../logger');
+const { error: ErrorLogger } = require('../logger');
+const ItemNotFound = require('../errors/ItemNotFound');
 
 const router = Router();
 
 router.get('', async (req, res) => {
   const result = { data: [], count: 0 };
   try {
-    let { offset = 0, limit = 5 } = req.query;
-    offset = Number(offset);
-    limit = Number(limit);
-    result.data = await missingService.getAllMissings(offset, limit);
+    result.data = await missingService.getAllMissings(req.query);
     result.count = await missingService.getTotalCountMissing();
   } catch (e) {
-    error.error(e);
-    if (e instanceof DatabaseError) {
+    ErrorLogger.error(e);
+    if (e instanceof BaseError) {
       res.status(500);
     }
     return res.send();
@@ -27,21 +25,52 @@ router.get('', async (req, res) => {
 });
 
 router.post('', fileMiddleware.array('images', 5), async (req, res) => {
-  // Save missing and images if any
-  const missing = await missingService.saveMissing(req.body);
-  const urls = await uploadService.uploadImages(req.files);
-  const images = await missingService.saveImages(missing.id, urls);
-  return res.status(201).json({ missing, images });
+  try {
+    const missing = await missingService.saveMissing(req.body);
+    let images = [];
+    console.log(req.files);
+    if (req.files && req.files.length > 0) {
+      const files = await uploadService.uploadImages(req.files);
+      console.log(files);
+      images = await missingService.saveImages(missing.id, files);
+    }
+    return res.status(201).json({ missing, images });
+  } catch (e) {
+    ErrorLogger.error(e);
+    return res.status(500);
+  }
 });
 
-router.get(':id', (req, res) => {
-  // Get missing by id
-  res.json({});
+router.get('/:id', async (req, res) => {
+  try {
+    const missing = await missingService.getMissingById(req.params.id);
+    return res.json(missing);
+  } catch (e) {
+    ErrorLogger.error(e);
+    if (e instanceof ItemNotFound) {
+      res.status(404);
+    } else {
+      res.status(500);
+    }
+    return res.send();
+  }
 });
 
-router.put(':id', (req, res) => {
+router.put('/:id', async (req, res) => {
   // Update missing
-  res.json({});
+  // body = { missing: {} images: [{ id: '', url: '', remove: false|true }] }
+  try {
+    const result = await missingService.updateMissing(req.params.id, req.body);
+    return res.json({});
+  } catch (e) {
+    ErrorLogger.error(e);
+    if (e instanceof ItemNotFound) {
+      res.status(404);
+    } else {
+      res.status(500);
+    }
+    return res.send();
+  }
 });
 
 router.put(':id/images', (req, res) => {

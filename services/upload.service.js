@@ -25,11 +25,18 @@ const uploadImages = async (files = []) => {
   const uploads = [];
   for (let i = 0; i < files.length; i++) {
     const result = await uploadRequest(files[i].path, 'missing');
-    uploads.push(result?.url);
+    uploads.push({ url: result?.url, publicId: result?.public_id });
   }
   return uploads;
 };
 
+const deleteImages = async (publicIDs = []) => {
+  for (let i = 0; i < publicIDs.length; i++) {
+    await cloudinary.uploader.destroy(publicIDs[i]);
+  }
+};
+
 module.exports = {
   uploadImages,
+  deleteImages,
 };
